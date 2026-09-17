@@ -76,10 +76,10 @@ From CKAN 2.11, `ckan db init` is an alias of `ckan db upgrade`, which applies C
 Things to know:
 
 - **Only enabled plugins are migrated.** Adding a plugin to `CKAN__PLUGINS` applies its migrations on the next start. Removing it does not reverse them.
-- **Plugins are migrated in alphabetical order of plugin name**, not in the order they appear in `CKAN__PLUGINS`. A plugin's migrations can rely on CKAN's own tables, which are always migrated first, but not on another plugin's tables.
+- **CKAN chooses the order plugins are migrated in**: alphabetical by plugin name in CKAN 2.11 and 2.12, not the order of `CKAN__PLUGINS`. Each plugin's migrations are tracked separately, so one plugin cannot declare that its migrations need another plugin's. A plugin's migrations can rely on CKAN's own tables, which are always migrated first, but not on another plugin's tables: on an empty database, a plugin whose migrations need tables from a plugin that sorts after it fails on every start.
 - **The plugin list is written before `ckan db init` runs**, so the migrations follow `CKAN__PLUGINS` even when an image's `ckan.ini` lists different plugins.
 - **Migrations run on every start, before CKAN serves requests.** A long migration, such as an index build on a large table, delays every start while it runs; use `CREATE INDEX CONCURRENTLY` and allow for it in any start-up health check.
-- To manage migrations yourself instead, set `MAINTENANCE_MODE=true`, which skips all of `prerun.py`'s steps, and run the ones you need in your own start-up script. `ckan db upgrade --skip-plugins` applies CKAN's own migrations only.
+- To manage migrations yourself, for example to run plugins in a particular order, set `MAINTENANCE_MODE=true`, which skips all of `prerun.py`'s steps, and run the ones you need in your own start-up script: `ckan db upgrade --skip-plugins` for CKAN's own migrations, then `ckan db upgrade -p <plugin>` for each plugin in the order you need.
 
 ### Release
 
