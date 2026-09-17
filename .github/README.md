@@ -24,7 +24,7 @@ Our own fixes, merged into `downstream` while their upstream pull request is ope
 
 | Branch | Upstream pull request | What it does |
 |---|---|---|
-| `fix/prerun-plugins-before-db-init` | _to be opened_ | `prerun.py` writes `CKAN__PLUGINS` to `ckan.ini` before `ckan db init`, so CKAN 2.11+ migrates every enabled plugin; README section on what happens at start-up |
+| `fix/prerun-plugins-before-db-init` | [ckan/ckan-docker-base#140](https://github.com/ckan/ckan-docker-base/pull/140) | `prerun.py` writes `CKAN__PLUGINS` to `ckan.ini` before `ckan db init`, so CKAN 2.11+ migrates every enabled plugin; README section on what happens at start-up |
 
 ## Keeping up with upstream
 
